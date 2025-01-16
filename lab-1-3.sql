@@ -10,4 +10,5 @@
 
 select year, name, wins, losses
 from teams
-order by losses desc;
+order by losses desc
+limit 3;
