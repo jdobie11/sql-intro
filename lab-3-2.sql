@@ -2,6 +2,11 @@
 
 -- Expected result:
 --
+
+select name, average(wins) as average_wins
+from teams
+where year > 1999;
+
 -- +-------------------------------+------------------+
 -- | Anaheim Angels                | 85.75            |
 -- | Arizona Diamondbacks          | 76.9             |

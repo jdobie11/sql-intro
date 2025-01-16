@@ -14,4 +14,7 @@
 -- | 2020 | 30       |
 -- +------+----------+
 
-
+select year, count(name) as number_of_teams
+from teams
+group by year
+order by year asc;
