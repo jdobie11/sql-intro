@@ -18,8 +18,16 @@
 
 
 
-select year, max(wins) as most_wins
-from teams
-where year >= 1960
-group by year
-order by most_wins desc;
+WITH RankedTeams AS (
+    SELECT 
+        year, 
+        name, 
+        wins,
+        RANK() OVER (PARTITION BY year ORDER BY wins DESC) AS win_rank
+    FROM teams
+    WHERE year >= 1960
+)
+SELECT year, name, wins AS most_wins
+FROM RankedTeams
+WHERE win_rank = 1
+ORDER BY wins DESC;

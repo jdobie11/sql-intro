@@ -6,12 +6,24 @@
 
 
 
-select c.name, first_name, last_name, max(home_runs)
-from stats a
-left join players b on a.player_id = b.id
-left join teams c on a.team_id = c.id
-where c.year = "2019"
-group by c.name;
+
+
+WITH RankedHomers AS (
+    SELECT 
+        c.name AS team_name, 
+        b.first_name, 
+        b.last_name, 
+        a.home_runs,
+        RANK() OVER (PARTITION BY c.name ORDER BY a.home_runs DESC) AS rank
+    FROM stats a
+    LEFT JOIN players b ON a.player_id = b.id
+    LEFT JOIN teams c ON a.team_id = c.id
+    WHERE c.year = '2019'
+)
+SELECT team_name, first_name, last_name, home_runs
+FROM RankedHomers
+WHERE rank = 1
+ORDER BY team_name, home_runs DESC, last_name, first_name;
 
 
 
